@@ -1,0 +1,696 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-cream: #FFF8F0;
+  --bg-amber: #FFECB3;
+  --text-dark: #3E2723;
+  --text-brown: #5D4037;
+  --text-muted: #8D6E63;
+  --text-light-brown: #BCAAA4;
+  --saffron: #E65100;
+  --tab-bg: #F5F0EB;
+  --card-bg: #FFFFFF;
+  --font-hindi: 'Noto Sans Devanagari', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: var(--font-hindi);
+  background: var(--bg-cream);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.screen.fade-in {
+  animation: fadeIn 0.35s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== HOME SCREEN ===== */
+
+.home-screen {
+  background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-amber) 50%, var(--bg-cream) 100%);
+}
+
+.home-header {
+  padding: calc(env(safe-area-inset-top, 44px) + 16px) 24px 8px;
+}
+
+.home-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.home-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Today Banner */
+.today-banner {
+  padding: 12px 24px;
+  animation: slideUp 0.5s ease-out 0.1s both;
+}
+
+.today-banner-inner {
+  border-radius: 20px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.today-banner-inner:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.today-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.today-banner-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 14px;
+}
+
+.today-banner-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.today-banner-icon .icon {
+  font-size: 28px;
+  color: #FFFFFF;
+}
+
+.today-banner-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.today-banner-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-top: 2px;
+}
+
+.today-banner-deity {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.75);
+  margin-top: 1px;
+}
+
+.today-banner-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.today-banner-arrow .icon {
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+/* Section Header */
+.section-header {
+  padding: 4px 24px 8px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-brown);
+}
+
+/* Day Cards List */
+.day-cards-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 34px) + 24px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.day-card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+  animation: slideUp 0.4s ease-out both;
+}
+
+.day-card:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.day-card-inner {
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.day-card-inner.today {
+  color: #FFFFFF;
+}
+
+.day-card-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 14px;
+}
+
+.day-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.day-card-icon .icon {
+  font-size: 24px;
+}
+
+.day-card-info {
+  flex: 1;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.day-card-inner.today .day-name {
+  color: #FFFFFF;
+}
+
+.today-badge {
+  background: rgba(255,255,255,0.3);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.deity-name {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.day-card-inner.today .deity-name {
+  color: rgba(255,255,255,0.8);
+}
+
+.day-card-chevron {
+  font-size: 18px;
+  color: var(--text-light-brown);
+}
+
+.day-card-inner.today .day-card-chevron {
+  color: rgba(255,255,255,0.7);
+}
+
+/* ===== KATHA DETAIL SCREEN ===== */
+
+.katha-screen {
+  position: relative;
+}
+
+.katha-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40%;
+  z-index: 0;
+}
+
+.katha-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 44px) + 8px) 16px 12px;
+}
+
+.header-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-radius: 22px;
+  transition: background 0.15s;
+}
+
+.header-btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.header-btn .icon {
+  font-size: 22px;
+  color: var(--text-dark);
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.header-day-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.katha-scroll {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 34px) + 24px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.katha-scroll > * + * {
+  margin-top: 16px;
+}
+
+/* Hero Card */
+.hero-card {
+  border-radius: 24px;
+  padding: 28px;
+  text-align: center;
+  animation: slideUp 0.5s ease-out 0.1s both;
+}
+
+.hero-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 36px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.hero-icon-wrap .icon {
+  font-size: 36px;
+  color: #FFFFFF;
+}
+
+.hero-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.hero-deity {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.8);
+  margin-top: 4px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  background: rgba(255,255,255,0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.hero-badge .icon {
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.hero-badge-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+/* Tabs */
+.tabs-container {
+  display: flex;
+  background: var(--tab-bg);
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+  animation: slideUp 0.5s ease-out 0.2s both;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-hindi);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn.active {
+  color: #FFFFFF;
+}
+
+.tab-custom-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--saffron);
+}
+
+.tab-btn.active .tab-custom-dot {
+  background: rgba(255,255,255,0.7);
+}
+
+/* Font Size Control */
+.font-size-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 8px 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  animation: slideUp 0.5s ease-out 0.25s both;
+}
+
+.font-size-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: var(--tab-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-hindi);
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.font-size-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.font-size-btn.small-text {
+  font-size: 14px;
+}
+
+.font-size-btn.large-text {
+  font-size: 22px;
+}
+
+.font-size-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Content Card */
+.content-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  animation: slideUp 0.5s ease-out 0.3s both;
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.content-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.content-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.content-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.edited-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.edited-badge .icon {
+  font-size: 11px;
+}
+
+.content-text {
+  font-weight: 400;
+  color: #4E342E;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Edit Button */
+.edit-content-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-hindi);
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+  transition: background 0.15s;
+}
+
+.edit-content-btn:hover {
+  background: rgba(0,0,0,0.02);
+}
+
+.edit-content-btn .icon {
+  font-size: 16px;
+}
+
+/* Edit Mode */
+.edit-input {
+  width: 100%;
+  min-height: 300px;
+  font-family: var(--font-hindi);
+  color: #4E342E;
+  border: none;
+  outline: none;
+  resize: vertical;
+  padding: 0;
+  background: none;
+}
+
+.edit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.edit-actions-right {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.edit-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-hindi);
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.edit-action-btn:hover {
+  opacity: 0.85;
+}
+
+.edit-action-btn .icon {
+  font-size: 16px;
+}
+
+.reset-btn {
+  background: #FFF3E0;
+  color: var(--saffron);
+}
+
+.cancel-btn {
+  background: var(--tab-bg);
+  color: var(--text-muted);
+}
+
+.save-btn {
+  color: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Day Navigator */
+.day-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  animation: slideUp 0.5s ease-out 0.4s both;
+}
+
+.day-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-hindi);
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.day-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.day-nav-btn .icon {
+  font-size: 18px;
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
+}
