@@ -42,16 +42,22 @@ export function renderKatha(kathas, dayIndex) {
   state.isEditing = false;
   state.fontLevel = getFontSizeLevel();
 
-  render();
+  render({ animate: true, preserveScroll: false });
 }
 
-function render() {
+function getScrollTop() {
+  return document.querySelector('.katha-scroll')?.scrollTop || 0;
+}
+
+function render(options = {}) {
+  const { animate = false, preserveScroll = true } = options;
+  const previousScrollTop = preserveScroll ? getScrollTop() : 0;
   const katha = getKathaForDay(kathasData, state.dayIndex);
   const app = document.getElementById('app');
 
   if (!katha) {
     app.innerHTML = `
-      <div class="screen katha-screen fade-in">
+      <div class="screen katha-screen${animate ? ' fade-in' : ''}">
         <div class="katha-scroll">
           <div class="content-card">
             <div class="content-title">कथा उपलब्ध नहीं है</div>
@@ -82,7 +88,7 @@ function render() {
   const nextKatha = canNext ? getKathaForDay(kathasData, state.dayIndex + 1) : null;
 
   app.innerHTML = `
-    <div class="screen katha-screen fade-in">
+    <div class="screen katha-screen${animate ? ' fade-in' : ''}">
       <div class="katha-bg" style="background:linear-gradient(180deg, ${katha.colorLight} 0%, #FFF8F0 60%, #FFFFFF 100%)"></div>
 
       <div class="katha-header">
@@ -98,7 +104,7 @@ function render() {
         }
       </div>
 
-      <div class="katha-scroll">
+      <div class="katha-scroll" id="katha-scroll">
         ${!state.isEditing ? `
           <div class="hero-card" style="background:linear-gradient(135deg, ${katha.color}, ${katha.color}CC)">
             <div class="hero-icon-wrap">
@@ -175,9 +181,7 @@ function render() {
               </div>
             </div>
           ` : `
-            <div class="content-text" style="font-size:${fontConfig.body}px;line-height:${fontConfig.lineHeight}px">
-              ${safeContentForActiveTab}
-            </div>
+            <div class="content-text" style="font-size:${fontConfig.body}px;line-height:${fontConfig.lineHeight}px">${safeContentForActiveTab}</div>
             <button class="edit-content-btn" id="edit-content-btn"
               style="border-color:${katha.color}40;color:${katha.color}">
               ${icon('create-outline', 16, katha.color)}
@@ -204,10 +208,19 @@ function render() {
 
   bindEvents(katha);
 
+  if (preserveScroll) {
+    const scrollContainer = document.getElementById('katha-scroll');
+    if (scrollContainer) scrollContainer.scrollTop = previousScrollTop;
+  }
+
   if (state.isEditing) {
     const input = document.getElementById('edit-input');
     if (input) input.value = contentForActiveTab;
   }
+}
+
+function renderInPlace() {
+  render({ animate: false, preserveScroll: true });
 }
 
 function bindEvents(katha) {
@@ -216,7 +229,7 @@ function bindEvents(katha) {
   $('back-btn')?.addEventListener('click', () => {
     if (state.isEditing) {
       state.isEditing = false;
-      render();
+      renderInPlace();
     } else {
       goBack();
     }
@@ -232,11 +245,11 @@ function bindEvents(katha) {
         if (confirm('बिना सहेजे टैब बदलें? आपके बदलाव खो जाएंगे।')) {
           state.isEditing = false;
           state.activeTab = tab;
-          render();
+          renderInPlace();
         }
       } else {
         state.activeTab = tab;
-        render();
+        renderInPlace();
       }
     });
   });
@@ -244,13 +257,13 @@ function bindEvents(katha) {
   $('font-decrease')?.addEventListener('click', () => {
     state.fontLevel = decreaseLevel(state.fontLevel);
     setFontSizeLevel(state.fontLevel);
-    render();
+    renderInPlace();
   });
 
   $('font-increase')?.addEventListener('click', () => {
     state.fontLevel = increaseLevel(state.fontLevel);
     setFontSizeLevel(state.fontLevel);
-    render();
+    renderInPlace();
   });
 
   $('save-btn')?.addEventListener('click', () => {
@@ -262,19 +275,19 @@ function bindEvents(katha) {
       saveCustomContent(state.dayIndex, state.activeTab, text);
     }
     state.isEditing = false;
-    render();
+    renderInPlace();
   });
 
   $('cancel-btn')?.addEventListener('click', () => {
     state.isEditing = false;
-    render();
+    renderInPlace();
   });
 
   $('reset-btn')?.addEventListener('click', () => {
     if (confirm('क्या आप मूल पाठ पर वापस जाना चाहते हैं? आपके संपादन हटा दिए जाएंगे।')) {
       resetContent(state.dayIndex, state.activeTab);
       state.isEditing = false;
-      render();
+      renderInPlace();
     }
   });
 
@@ -293,7 +306,7 @@ function bindEvents(katha) {
 
 function startEdit() {
   state.isEditing = true;
-  render();
+  renderInPlace();
   setTimeout(() => {
     const input = document.getElementById('edit-input');
     if (input) input.focus();
