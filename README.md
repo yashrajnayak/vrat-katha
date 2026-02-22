@@ -186,7 +186,7 @@ For production updates, if users see stale content due to cache:
 
 ## License
 
-No license file is included yet. If you want this open-source, add a `LICENSE` file (for example MIT).
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
