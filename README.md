@@ -14,7 +14,7 @@ The app is fully static and designed to run smoothly on modern mobile browsers a
 ## Highlights
 
 - 7-day vrat catalog (Sunday to Saturday)
-- Day-specific deity visuals and themed color palette
+- Day-specific visuals and themed color palette
 - “Today’s Katha” quick entry on home screen
 - Readable typography with adjustable font size
 - First-use mobile prompt to add the app to the home screen
@@ -24,12 +24,9 @@ The app is fully static and designed to run smoothly on modern mobile browsers a
 
 ## Tech Stack
 
-- HTML5
-- CSS3 (custom, no framework)
-- Vanilla JavaScript (ES modules)
+- HTML, CSS and Vanilla JavaScript
 - LocalStorage for user preferences and first-use prompt state
 - Service Worker Cache API
-- Optional Node.js static server (`server.js`) for local development
 
 ## Project Structure
 
@@ -132,25 +129,6 @@ Run syntax and unit tests:
 ```bash
 bash scripts/smoke-check.sh
 node --test tests/*.test.mjs
-```
-
-## Deploy to GitHub Pages
-
-Because this app is static, no build step is required.
-
-1. Push repository to GitHub.
-2. Open repository settings.
-3. Go to **Settings → Pages**.
-4. Under **Build and deployment**, select:
-   - **Source:** Deploy from a branch
-   - **Branch:** `main`
-   - **Folder:** `/ (root)`
-5. Save.
-
-Your site URL will be:
-
-```text
-https://yashrajnayak.github.io/vrat-katha/
 ```
 
 ## Customize Content
