@@ -2,6 +2,8 @@
 
 A lightweight, mobile-first Progressive Web App (PWA) for reading weekly Hindu vrat kathas in Hindi.
 
+<img width="1280" height="1280" alt="Screenshots" src="https://github.com/user-attachments/assets/610d2d7b-db88-4ff3-87a1-eee7a7fd9477" />
+
 Live app sections include:
 - व्रत कथा (Katha)
 - व्रत विधि (Vidhi)
