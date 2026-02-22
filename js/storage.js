@@ -1,32 +1,5 @@
-const CUSTOM_CONTENT_KEY = 'vrat_katha_custom_content';
 const FONT_SIZE_KEY = 'font_size_preference';
-
-export function getCustomContent(dayIndex, tab) {
-  try {
-    const data = JSON.parse(localStorage.getItem(CUSTOM_CONTENT_KEY) || '{}');
-    return data[`${dayIndex}_${tab}`] || null;
-  } catch { return null; }
-}
-
-export function saveCustomContent(dayIndex, tab, text) {
-  try {
-    const data = JSON.parse(localStorage.getItem(CUSTOM_CONTENT_KEY) || '{}');
-    data[`${dayIndex}_${tab}`] = text;
-    localStorage.setItem(CUSTOM_CONTENT_KEY, JSON.stringify(data));
-  } catch (e) { console.error('Save failed:', e); }
-}
-
-export function resetContent(dayIndex, tab) {
-  try {
-    const data = JSON.parse(localStorage.getItem(CUSTOM_CONTENT_KEY) || '{}');
-    delete data[`${dayIndex}_${tab}`];
-    localStorage.setItem(CUSTOM_CONTENT_KEY, JSON.stringify(data));
-  } catch (e) { console.error('Reset failed:', e); }
-}
-
-export function hasCustomContent(dayIndex, tab) {
-  return getCustomContent(dayIndex, tab) !== null;
-}
+const INSTALL_PROMPT_SEEN_KEY = 'a2hs_prompt_seen';
 
 const LEVELS = ['small', 'medium', 'large', 'xlarge'];
 const FONT_CONFIGS = {
@@ -36,16 +9,30 @@ const FONT_CONFIGS = {
   xlarge: { body: 22, lineHeight: 42, label: 'बहुत बड़ा' },
 };
 
-export function getFontSizeLevel() {
+function readLocalStorage(key) {
   try {
-    const stored = localStorage.getItem(FONT_SIZE_KEY);
-    if (stored && LEVELS.includes(stored)) return stored;
-  } catch {}
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage failures in private mode or restricted environments.
+  }
+}
+
+export function getFontSizeLevel() {
+  const stored = readLocalStorage(FONT_SIZE_KEY);
+  if (stored && LEVELS.includes(stored)) return stored;
   return 'medium';
 }
 
 export function setFontSizeLevel(level) {
-  try { localStorage.setItem(FONT_SIZE_KEY, level); } catch {}
+  writeLocalStorage(FONT_SIZE_KEY, level);
 }
 
 export function getFontConfig(level) {
@@ -68,4 +55,12 @@ export function increaseLevel(level) {
 export function decreaseLevel(level) {
   const i = LEVELS.indexOf(level);
   return i > 0 ? LEVELS[i - 1] : level;
+}
+
+export function hasSeenInstallPrompt() {
+  return readLocalStorage(INSTALL_PROMPT_SEEN_KEY) === '1';
+}
+
+export function markInstallPromptSeen() {
+  writeLocalStorage(INSTALL_PROMPT_SEEN_KEY, '1');
 }

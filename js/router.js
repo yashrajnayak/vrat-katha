@@ -1,3 +1,5 @@
+import { parseHash } from './router-utils.mjs';
+
 let currentRoute = null;
 let routeHandler = null;
 
@@ -8,17 +10,7 @@ export function initRouter(handler) {
 }
 
 function handleRoute() {
-  const hash = window.location.hash || '#/';
-  const [path, ...params] = hash.slice(1).split('/').filter(Boolean);
-
-  if (!path || path === '') {
-    currentRoute = { name: 'home', params: {} };
-  } else if (path === 'katha') {
-    currentRoute = { name: 'katha', params: { day: params[0] || '0' } };
-  } else {
-    currentRoute = { name: 'home', params: {} };
-  }
-
+  currentRoute = parseHash(window.location.hash || '#/');
   if (routeHandler) routeHandler(currentRoute);
 }
 
@@ -33,3 +25,5 @@ export function goBack() {
 export function getCurrentRoute() {
   return currentRoute;
 }
+
+export { parseHash };

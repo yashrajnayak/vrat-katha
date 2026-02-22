@@ -2,6 +2,7 @@ import { initRouter } from './router.js';
 import { loadKathas } from './data.js';
 import { renderHome } from './views/home.js';
 import { renderKatha } from './views/katha.js';
+import { initInstallPrompt } from './install-prompt.js';
 
 let kathas = [];
 
@@ -19,6 +20,8 @@ async function init() {
         break;
     }
   });
+
+  initInstallPrompt();
 }
 
 init();

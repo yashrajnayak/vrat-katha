@@ -15,10 +15,9 @@ The app is fully static and designed to run smoothly on modern mobile browsers a
 - Day-specific deity visuals and themed color palette
 - “Today’s Katha” quick entry on home screen
 - Readable typography with adjustable font size
-- In-app content editing with local persistence
-- Per-tab “reset to original” support
+- First-use mobile prompt to add the app to the home screen
 - PWA install support (`manifest.json` + `sw.js`)
-- Offline-first behavior through service worker cache
+- Offline support via service worker caching
 - Hash-based routing (`#/`) so deep links work on static hosting
 
 ## Tech Stack
@@ -26,7 +25,7 @@ The app is fully static and designed to run smoothly on modern mobile browsers a
 - HTML5
 - CSS3 (custom, no framework)
 - Vanilla JavaScript (ES modules)
-- LocalStorage for user edits/preferences
+- LocalStorage for user preferences and first-use prompt state
 - Service Worker Cache API
 - Optional Node.js static server (`server.js`) for local development
 
@@ -46,15 +45,27 @@ The app is fully static and designed to run smoothly on modern mobile browsers a
 ├── icons/
 │   ├── icon-192.png
 │   └── icon-512.png
-└── js/
-    ├── app.js
-    ├── data.js
-    ├── icons.js
-    ├── router.js
-    ├── storage.js
-    └── views/
-        ├── home.js
-        └── katha.js
+├── js/
+│   ├── app.js
+│   ├── data.js
+│   ├── icons.js
+│   ├── install-prompt.js
+│   ├── router.js
+│   ├── router-utils.mjs
+│   ├── storage.js
+│   ├── utils/
+│   │   └── color.mjs
+│   └── views/
+│       ├── home.js
+│       ├── katha.js
+│       └── templates/
+│           ├── home-template.js
+│           └── katha-template.js
+├── scripts/
+│   └── smoke-check.sh
+└── tests/
+    ├── color-utils.test.mjs
+    └── router-utils.test.mjs
 ```
 
 ## How It Works
@@ -81,13 +92,13 @@ Each day entry includes:
 
 ### Local Persistence
 
-User edits and font size are saved in localStorage:
-- `vrat_katha_custom_content`
+The app stores the following in `localStorage`:
 - `font_size_preference`
+- `a2hs_prompt_seen`
 
 ### Offline Support
 
-`sw.js` pre-caches app shell + content assets and serves cached responses when offline.
+`sw.js` warms the cache at install time and discovers module assets from the app entry graph so cache coverage stays aligned with current JS modules.
 
 ## Run Locally
 
@@ -111,6 +122,15 @@ http://localhost:3456
 ### Option 2: Any static file server
 
 You can serve this folder using any static server (`npx serve`, `python -m http.server`, etc.).
+
+## Quality Checks
+
+Run syntax and unit tests:
+
+```bash
+bash scripts/smoke-check.sh
+node --test tests/*.test.mjs
+```
 
 ## Deploy to GitHub Pages
 
@@ -158,6 +178,7 @@ Edit:
 Update:
 
 - `js/views/katha.js`
+- `js/views/templates/katha-template.js`
 - `data/kathas.json`
 - `css/styles.css`
 
@@ -168,7 +189,7 @@ The local development server (`server.js`) includes:
 - correct static 404 behavior
 - SPA fallback only for route-like paths
 
-The UI also handles empty or invalid data safely and escapes rendered user content before injecting it into HTML.
+The UI safely handles invalid/empty data and applies content text via `textContent`.
 
 ## PWA Notes
 
@@ -189,4 +210,4 @@ No license file is included yet. If you want this open-source, add a `LICENSE` f
 
 ## Acknowledgements
 
-Devnagari font: Google Fonts (`Noto Sans Devanagari`).
+Devanagari font: Google Fonts (`Noto Sans Devanagari`).
